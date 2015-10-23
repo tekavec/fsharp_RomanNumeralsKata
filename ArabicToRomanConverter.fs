@@ -1,13 +1,21 @@
 ﻿module ArabicToRomanConverter
 
+let ArabicAndRoman = [(10, "X"); (9, "IX"); (5, "V"); (4, "IV"); (1, "I")]
+
+let FindRoman arabic =
+    ArabicAndRoman 
+    |> List.find (fun (arab, roman) -> arab <= arabic)
+
+
 let rec ToRoman arabic =
-    match arabic with
-    | 1 -> "I"
-    | x when x < 5 -> ToRoman(1) + ToRoman (arabic-1)
-    | 5 -> "V"
-    | x when x < 10 -> ToRoman(5) + ToRoman(arabic-5)
-    | 10 -> "X"
-    | x when x < 50 -> ToRoman(10) + ToRoman(arabic-10)
+    let arabToRoman = (FindRoman arabic)
+    let arab = fst arabToRoman
+    let roman = snd arabToRoman
+    let remainder = arabic - arab
+    if remainder = 0
+    then roman
+    else ToRoman(arab) + ToRoman(remainder)
+
 //    | 4 -> "IV"
 //    | 5 -> "V"
 //    | 6 -> "VI"
